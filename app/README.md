@@ -4,8 +4,8 @@ The Backbone app
 
 1. Homepage
 2. Article list
-  - by Date
-  - by Tag/Topic
+    - by Date
+    - by Tag/Topic
 3. Article view
 4. Static page?
 
