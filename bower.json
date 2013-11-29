@@ -1,5 +1,5 @@
 {
-  "name": "foundation-libsass-template",
+  "name": "backflask",
   "dependencies": {
     "foundation": "zurb/bower-foundation"
   },
