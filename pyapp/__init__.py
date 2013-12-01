@@ -1,12 +1,17 @@
-import json
-from flask import Flask, request, render_template
+from flask import Flask
+from flask.ext.sqlalchemy import SQLAlchemy
 
+""" Backflask application """
+
+# Set up app and db
 app = Flask(__name__, static_folder="../assets")
 app.config.from_object('pyapp.config.Config')
+db = SQLAlchemy(app)
 
-@app.route('/', methods=['POST', 'GET'])
-def index():
-    data = {
-        "foo": "bar"
-    }
-    return json.dumps(data) if request.is_xhr else render_template('base.html', **data)
+# import models and views - must wait until after app and db instantiated
+import models
+import views
+
+# import api blueprint
+from pyapp.api import api
+app.register_blueprint(api, url_prefix="/api")
