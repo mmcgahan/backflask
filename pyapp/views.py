@@ -1,5 +1,5 @@
 from flask import render_template, request
-from pyapp import app
+from . import app
 
 
 @app.route('/', methods=['GET'])

@@ -4,8 +4,8 @@ from flask.ext.sqlalchemy import SQLAlchemy
 """ Backflask application """
 
 # Set up app and db
-app = Flask(__name__, static_folder="../assets")
-app.config.from_object('pyapp.config.Config')
+app = Flask(__name__, static_folder="../assets", instance_relative_config=True)
+app.config.from_pyfile('config.py')
 db = SQLAlchemy(app)
 
 # import models and views - must wait until after app and db instantiated

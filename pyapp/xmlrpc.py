@@ -2,8 +2,8 @@ import string
 from datetime import datetime
 from flask import url_for
 from flask.ext.xmlrpc import XMLRPCHandler, Fault
-from labs import app, db
-from labs.models import User, Post, Tag, Category
+from . import app, db
+from .models import User, Post, Tag, Category
 
 # MetaWeblogAPI XML-RPC
 handler = XMLRPCHandler('xmlapi')

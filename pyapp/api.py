@@ -1,6 +1,6 @@
 import json
 from flask import Blueprint
-from pyapp.models import Post
+from .models import Post
 
 """ Backflask JSON API module/blueprint
 
