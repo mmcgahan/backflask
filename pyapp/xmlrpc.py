@@ -13,35 +13,54 @@ blogger = handler.namespace('blogger')
 wordpress = handler.namespace('wp')
 moveabletype = handler.namespace('mt')
 
+def authenticate(username, password):
+    user = User.is_authentic(username, password)
+    if not user:
+        raise Fault("invalid_user",
+                    "Invalid username/password, please try again.")
+    return user
+
+def xmlpost(post):
+    return {
+        'title': post.title,
+        'link': 'http://127.0.0.1/post/' + post.slug,
+        'description': post.content['raw'],
+        'postid': post.id,
+        'mt_excerpt': post.teaser,
+        'mt_tags': ','.join([tag.name for tag in post.tags]),
+        'dateCreated': post.create_date,
+        'wp_slug': post.slug,
+        'custom_fields': [{
+            'key': 'subtitle',
+            'value': post.subtitle
+        }, {
+            'key': 'hero_img',
+            'value': post.hero_img
+        }]
+    }
 
 @metaweblog.register
 def newPost(blog_id, username, password, content, publish):
-    user = db.session.query(User).filter(User.username == username).first()
-    if user is None or not user.check_password(password):
-        raise Fault("invalid_user",
-                    "Invalid username/password, please try again.")
-    post = Post(content['title'], content['description'])
-    post.author = user
-    post.teaser = content['mt_excerpt']
-    if 'wp_slug' in content:
-        post.slug = content['wp_slug']
-    if 'dateCreated' in content:
-        post.create_date = datetime.strptime(str(content['dateCreated']),
-                                            "%Y%m%dT%H:%M:%SZ")
-    if 'custom_fields' in content:
-        for custom_field in content['custom_fields']:
-            if custom_field['key'] == 'subtitle':
-                post.subtitle = custom_field['value']
-            elif custom_field['key'] == 'hero_img':
-                post.hero_img = custom_field['value']
-    tag_names = string.split(content['mt_tags'], ',')
-    for tag_name in tag_names:
-        tag = Tag.query.filter(Tag.name == tag_name).first()
-        if tag is None:
-            tag = Tag(tag_name)
-            db.session.add(tag)
-            db.session.commit()
-        post.tags.append(tag)
+    user = authenticate(username, password)
+    create_date = None
+    if content.get('dateCreated'):
+        create_date = datetime.strptime(str(content.get('dateCreated')),
+                                        "%Y%m%dT%H:%M:%SZ")
+    post = Post(title=content['title'],
+                raw_content=content['description'],
+                status=content['post_status'],
+                author=user,
+                teaser=content.get('mt_excerpt'),
+                slug=content.get('wp_slug'),
+                create_date=create_date,
+                tag_names=string.split(content['mt_tags'], ','))
+
+    for custom_field in content.get('custom_fields', []):
+        if custom_field['key'] == 'subtitle':
+            post.subtitle = custom_field['value']
+        elif custom_field['key'] == 'hero_img':
+            post.hero_img = custom_field['value']
+
     db.session.add(post)
     db.session.commit()
     return post.id
@@ -49,36 +68,19 @@ def newPost(blog_id, username, password, content, publish):
 
 @metaweblog.register
 def editPost(post_id, username, password, content, publish):
-    user = db.session.query(User).filter(User.username == username).first()
-    if user is None or not user.check_password(password):
-        raise Fault("invalid_user",
-                    "Invalid username/password, please try again.")
+    authenticate(username, password)
     post = Post.query.get(post_id)
     post.title = content['title']
-    post.markdown = content['description']
-    post.set_html()
+    post.content = content['description']
     post.teaser = content['mt_excerpt']
-    if 'wp_slug' in content:
-        post.slug = content['wp_slug']
-    if 'dateCreated' in content:
-        post.create_date = datetime.strptime(str(content['dateCreated']),
-                                            "%Y%m%dT%H:%M:%SZ")
-    if 'custom_fields' in content:
-        for custom_field in content['custom_fields']:
-            if custom_field['key'] == 'subtitle':
-                post.subtitle = custom_field['value']
-            elif custom_field['key'] == 'hero_img':
-                post.hero_img = custom_field['value']
-    tag_names = string.split(content['mt_tags'], ',')
-    tags = []
-    for tag_name in tag_names:
-        tag = Tag.query.filter(Tag.name == tag_name).first()
-        if tag is None:
-            tag = Tag(tag_name)
-            db.session.add(tag)
-            db.session.commit()
-        tags.append(tag)
-    post.tags = tags
+    post.status = content['post_status']
+    post.tag_names = string.split(content['mt_tags'], ',')
+    post.slug = content.get('wp_slug')
+    create_date = content.get('dateCreated')
+    if create_date:
+        post.create_date = datetime.strptime(str(create_date),
+                                        "%Y%m%dT%H:%M:%SZ")
+
     db.session.add(post)
     db.session.commit()
     return True
@@ -86,75 +88,24 @@ def editPost(post_id, username, password, content, publish):
 
 @metaweblog.register
 def getPost(post_id, username, password):
-    user = db.session.query(User).filter(User.username == username).first()
-    if user is None or not user.check_password(password):
-        raise Fault("invalid_user",
-                    "Invalid username/password, please try again.")
+    authenticate(username, password)
     post = Post.query.filter(Post.id == post_id).first()
     if not post:
         raise Fault("not_found", "Post not found.")
-    item = {}
-    item['title'] = post.title
-    item['link'] = 'http://127.0.0.1/post/' + post.slug
-    item['description'] = post.markdown
-    item['postid'] = post.id
-    item['mt_excerpt'] = post.teaser
-    item['custom_fields'] = [
-        {
-            'key': 'subtitle',
-            'value': post.subtitle
-        },
-        {
-            'key': 'hero_img',
-            'value': post.hero_img
-        }
-    ]
-    item['wp_slug'] = post.slug
-    if post.tags:
-        item['mt_tags'] = ','.join(map(lambda tag: tag.name, post.tags))
-    item['dateCreated'] = post.create_date
-    return item
+
+    return xmlpost(post)
 
 
 @metaweblog.register
 def getRecentPosts(blogid, username, password, numberOfPosts):
-    user = db.session.query(User).filter(User.username == username).first()
-    if user is None or not user.check_password(password):
-        raise Fault("invalid_user",
-                    "Invalid username/password, please try again.")
+    authenticate(username, password)
     posts = Post.query.order_by('create_date').all()
-    response = []
-    for post in posts:
-        item = {}
-        item['title'] = post.title
-        item['link'] = 'http://127.0.0.1/post/' + post.slug
-        item['description'] = post.markdown
-        item['postid'] = post.id
-        item['mt_excerpt'] = post.teaser
-        item['wp_slug'] = post.slug
-        item['custom_fields'] = [
-            {
-                'key': 'subtitle',
-                'value': post.subtitle
-            },
-            {
-                'key': 'hero_img',
-                'value': post.hero_img
-            }
-        ]
-        tags = []
-        for tag in post.tags:
-            tags.append(tag.name)
-        item['mt_tags'] = ','.join(tags)
-        item['dateCreated'] = post.create_date
-        # if post['draft']:
-        #     item['draft'] = 'Yes'
-        response.append(item)
-    return response
+    return [xmlpost(post) for post in posts]
 
 
 @metaweblog.register
 def newMediaObject(blogid, username, password, mediaobject):
+    authenticate(username, password)
     filename = mediaobject['name']
     # b64_data = mediaobject['bits']
     # TODO: figure how to write b64_data to a file
@@ -164,48 +115,42 @@ def newMediaObject(blogid, username, password, mediaobject):
 
 @wordpress.register
 def getPages(blogid, username, password, numberOfPages):
+    authenticate(username, password)
     return []
 
 
 @wordpress.register
 def newCategory(blogid, username, password, category):
-    user = db.session.query(User).filter(User.username == username).first()
-    if user is None or not user.check_password(password):
-        raise Fault("invalid_user",
-                    "Invalid username/password, please try again.")
-    category = Category.query.filter(Category.name == category['name']).first()
-    if category is None:
-        category = Category(category['name'])
-        db.session.add(category)
-        db.session.commit()
+    authenticate(username, password)
+    # category = Category.query.filter(Category.name == category['name']).first()
+    # if category is None:
+    category = Category(category['name'])
+    db.session.add(category)
+    db.session.commit()
     return category.id
 
 
 @wordpress.register
 def getTags(blogid, username, password):
-    return map(lambda tag: {
-            'tag_id': tag.id,
-            'name': tag.name
-        }, Tag.query.all())
+    return [{ 'tag_id': tag.id, 'name': tag.name } for tag in Tag.query.all()]
 
 
 @wordpress.register
 def getCategories(blogid, username, password):
-    return map(lambda category: {
+    return [{
             'categoryId': category.id,
             'categoryName': category.name,
             'categoryDescription': category.description
-        }, Category.query.all())
+        } for category in Category.query.all()]
 
 
 @moveabletype.register
 def setPostCategories(post_id, username, password, categories):
     post = Post.query.get(post_id)
-    for category in categories:
-        category = Category.query.filter(
-            Category.name == category['categoryName']
-        ).first()
-        post.category = category
+    # built to set multiple categories - we will only set one
+    post.category = Category.query.filter(
+        Category.name == categories[0]['categoryName']
+    ).first()
     db.session.add(post)
     db.session.commit()
     return True
@@ -220,8 +165,7 @@ def getPostCategories(post_id, username, password):
             'categoryName': category.name,
             'categoryDescription': category.description
         }
-        return [category]
-    return []
+    return [category] if category else []
 
 
 @moveabletype.register
@@ -231,10 +175,7 @@ def supportedTextFilters():
 
 @blogger.register
 def deletePost(appkey, post_id, username, password, publish):
-    user = db.session.query(User).filter(User.username == username).first()
-    if user is None or not user.check_password(password):
-        raise Fault("invalid_user",
-                    "Invalid username/password, please try again.")
+    authenticate(username, password)
     post = Post.query.get(int(post_id))
     db.session.delete(post)
     db.session.commit()

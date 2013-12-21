@@ -21,15 +21,62 @@ class Post(db.Model):
     #                            backref=db.backref('posts', lazy='dynamic'))
     title = db.Column(db.String(255), nullable=False)
     subtitle = db.Column(db.String(255))
-    slug = db.Column(db.String(255), nullable=False, unique=True)
+    _status = db.Column(db.Integer, default=1)
     teaser = db.Column(db.String(511))
-    hero_img = db.Column(db.String(255), default="default.jpg")
-    markdown = db.Column(db.Text)
-    html = db.Column(db.Text)
+    hero_img = db.Column(db.String(255))
+    _raw_content = db.Column(db.Text)
+    _html_content = db.Column(db.Text)
+    slug = db.Column(db.String(255), nullable=False, unique=True)
     create_date = db.Column(db.TIMESTAMP, default=sql.functions.current_timestamp())
 
-    def set_html(self):
-        self.html = markdown(self.markdown)
+    STATUS = {
+        'draft': 0,
+        'publish': 1,
+        'private': 2,
+        'pending': 3,
+        3: 'pending',
+        2: 'private',
+        1: 'publish',
+        0: 'draft'
+    }
+
+    # content is 2-part: raw + HTML
+    @property
+    def content(self):
+        return {
+            'raw': self._raw_content,
+            'html': self._html_content
+        }
+    @content.setter
+    def content(self, raw_content):
+        self._raw_content = raw_content
+        self._html_content = markdown(raw_content)
+        return
+
+    # status is stored as an integer, reported as a string
+    @property
+    def status(self):
+        return self.STATUS[self._status]
+    @status.setter
+    def status(self, status_code):
+        self._status = self.STATUS[status_code]
+        return
+
+    @property
+    def tag_names(self):
+        return [tag.name for tag in self.tags]
+    @tag_names.setter
+    def tag_names(self, tag_names):
+        tags = []
+        for tag_name in tag_names:
+            tag = Tag.query.filter(Tag.name == tag_name).first()
+            if tag is None:
+                tag = Tag(tag_name)
+                db.session.add(tag)
+                db.session.commit()
+            tags.append(tag)
+        self.tags = tags
+        return
 
     @property
     def serialized(self):
@@ -42,10 +89,9 @@ class Post(db.Model):
             'uri': '/posts/%s' % self.slug,
             'teaser': self.teaser,
             'hero_img': self.hero_img,
-            'markdown': self.markdown,
-            'html': self.html,
+            'content': self.content,
             'create_date': self.create_date.isoformat(),
-            'tags': [tag.name for tag in self.tags]
+            'tags': self.tag_names
         }
 
     @staticmethod
@@ -56,13 +102,28 @@ class Post(db.Model):
 
     def __init__(self,
                 title,
-                markdown_content='',
-                category=None):
+                subtitle=None,
+                status='publish',
+                teaser=None,
+                hero_img=None,
+                raw_content='',
+                category=None,
+                author=None,
+                slug=None,
+                tag_names=[],
+                create_date=None):
         self.title = title
-        self.slug = utils.make_slug(title)
-        self.markdown = markdown_content
-        self.set_html()
-        self.categpry = category
+        self.subtitle = subtitle
+        self.status = status
+        self.category = category
+        self.content = raw_content
+        self.author = author
+        self.teaser = teaser
+        self.tag_names = tag_names
+        if create_date is not None:
+            self.create_date = create_date
+
+        self.slug = slug or utils.make_slug(title)
 
 
 class Tag(db.Model):
@@ -125,6 +186,12 @@ class User(db.Model):
         return db.session.query(
             sql.exists().where(User.username == username)
         ).scalar()
+
+    @staticmethod
+    def is_authentic(username, password):
+        user = db.session.query(User).filter(User.username == username).first()
+        return user is not None and user.check_password(password)
+
 
     def __init__(self, username, raw_pw, first_name='', last_name=''):
         self.salt = scrypt.generate_random_salt() #: You can also provide the byte length to return: salt = generate_password_salt(32)
