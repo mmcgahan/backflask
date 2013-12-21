@@ -22,3 +22,4 @@ def load_user(userid):
 # import and register api blueprint
 from .api import api_blueprint
 app.register_blueprint(api_blueprint, url_prefix="/api")
+import xmlrpc

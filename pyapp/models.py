@@ -15,8 +15,10 @@ post_tag = db.Table('post_tag', db.Model.metadata,
 class Post(db.Model):
     """ Post class """
     id = db.Column(db.Integer, primary_key=True)
-    # author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    # category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
+    # category = db.relationship('Category',
+    #                            backref=db.backref('posts', lazy='dynamic'))
     title = db.Column(db.String(255), nullable=False)
     subtitle = db.Column(db.String(255))
     slug = db.Column(db.String(255), nullable=False, unique=True)
@@ -125,7 +127,7 @@ class User(db.Model):
         ).scalar()
 
     def __init__(self, username, raw_pw, first_name='', last_name=''):
-        self.salt = scrypt.generate_password_salt() #: You can also provide the byte length to return: salt = generate_password_salt(32)
+        self.salt = scrypt.generate_random_salt() #: You can also provide the byte length to return: salt = generate_password_salt(32)
         self.username = username
         self.set_password(raw_pw)
         self.first_name = first_name
