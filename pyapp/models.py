@@ -2,7 +2,8 @@ import random
 from markdown import markdown
 from sqlalchemy import sql
 from pyapp import db, utils
-
+# from flask.ext.scrypt import generate_random_salt, generate_password_hash, check_password_hash
+from flask.ext import scrypt
 
 """ Post-Tag many-to-many join table """
 post_tag = db.Table('post_tag', db.Model.metadata,
@@ -82,54 +83,53 @@ class Category(db.Model):
         self.name = name
 
 
-# class User(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     username = db.Column(db.String(255), nullable=False, unique=True)
-#     password = db.Column(db.String(255), nullable=False)
-#     first_name = db.Column(db.String(255))
-#     last_name = db.Column(db.String(255))
-#     create_date = db.Column(
-#         db.TIMESTAMP,
-#         default=sql.functions.current_timestamp()
-#     )
-#     posts = db.relationship('Post', backref='author')
-#     active = db.Column(db.Boolean(), default=True, nullable=False)
-#     is_admin = db.Column(db.Boolean(), default=False, nullable=False)
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(255), nullable=False, unique=True)
+    password_hash = db.Column(db.String(255), nullable=False)
+    salt = db.Column(db.String(255), nullable=False)
+    first_name = db.Column(db.String(255))
+    last_name = db.Column(db.String(255))
+    create_date = db.Column(
+        db.TIMESTAMP,
+        default=sql.functions.current_timestamp()
+    )
+    posts = db.relationship('Post', backref='author')
+    active = db.Column(db.Boolean(), default=True, nullable=False)
+    is_admin = db.Column(db.Boolean(), default=False, nullable=False)
 
-#     def is_authenticated(self):
-#         return True
+    def is_authenticated(self):
+        return True
 
-#     def is_active(self):
-#         return self.active
+    def is_active(self):
+        return self.active
 
-#     def is_anonymous(self):
-#         return False
+    def is_anonymous(self):
+        return False
 
-#     def get_id(self):
-#         return unicode(self.id)
+    def get_id(self):
+        return unicode(self.id)
 
-#     def check_password(self, raw_pw):
-#         return bcrypt.check_password_hash(
-#             self.password,
-#             '%s%s' % (self.username, raw_pw)
-#         )
+    def check_password(self, raw_pw):
+        return scrypt.check_password_hash(raw_pw,
+                                          self.password_hash,
+                                          self.salt)
 
-#     def set_password(self, raw_pw):
-#         self.password = bcrypt.generate_password_hash(
-#             '%s%s' % (self.username, raw_pw)
-#         )
+    def set_password(self, raw_pw):
+        self.password_hash = scrypt.generate_password_hash(raw_pw, self.salt)
 
-#     @staticmethod
-#     def username_exists(username):
-#         return db.session.query(
-#             sql.exists().where(User.username == username)
-#         ).scalar()
+    @staticmethod
+    def username_exists(username):
+        return db.session.query(
+            sql.exists().where(User.username == username)
+        ).scalar()
 
-#     def __init__(self, username, raw_pw, first_name='', last_name=''):
-#         self.username = username
-#         self.set_password(raw_pw)
-#         self.first_name = first_name
-#         self.last_name = last_name
+    def __init__(self, username, raw_pw, first_name='', last_name=''):
+        self.salt = scrypt.generate_password_salt() #: You can also provide the byte length to return: salt = generate_password_salt(32)
+        self.username = username
+        self.set_password(raw_pw)
+        self.first_name = first_name
+        self.last_name = last_name
 
-#     def __repr__(self):
-#         return '<User %s>' % self.username
+    def __repr__(self):
+        return '<User %s>' % self.username
