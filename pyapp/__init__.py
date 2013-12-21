@@ -1,17 +1,25 @@
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
+from flask.ext.login import LoginManager
 
 """ Backflask application """
 
 # Set up app and db
-app = Flask(__name__, static_folder="../assets")
-app.config.from_object('pyapp.config.Config')
+app = Flask(__name__, static_folder="../assets", instance_relative_config=True)
+app.config.from_pyfile('config.py')
 db = SQLAlchemy(app)
+login_manager = LoginManager()
+login_manager.setup_app(app)
 
 # import models and views - must wait until after app and db instantiated
 import models
 import views
 
-# import api blueprint
-from pyapp.api import api
-app.register_blueprint(api, url_prefix="/api")
+@login_manager.user_loader
+def load_user(userid):
+    return models.User.query.get(userid)
+
+# import and register api blueprint
+from .api import api_blueprint
+app.register_blueprint(api_blueprint, url_prefix="/api")
+import xmlrpc

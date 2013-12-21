@@ -2,12 +2,12 @@ import string
 from datetime import datetime
 from flask import url_for
 from flask.ext.xmlrpc import XMLRPCHandler, Fault
-from labs import app, db
-from labs.models import User, Post, Tag, Category
+from . import app, db
+from .models import User, Post, Tag, Category
 
 # MetaWeblogAPI XML-RPC
 handler = XMLRPCHandler('xmlapi')
-handler.connect(app)
+handler.connect(app, '/xmlapi')
 metaweblog = handler.namespace('metaWeblog')
 blogger = handler.namespace('blogger')
 wordpress = handler.namespace('wp')
@@ -32,8 +32,8 @@ def newPost(blog_id, username, password, content, publish):
         for custom_field in content['custom_fields']:
             if custom_field['key'] == 'subtitle':
                 post.subtitle = custom_field['value']
-            elif custom_field['key'] == 'lead_img':
-                post.lead_img = custom_field['value']
+            elif custom_field['key'] == 'hero_img':
+                post.hero_img = custom_field['value']
     tag_names = string.split(content['mt_tags'], ',')
     for tag_name in tag_names:
         tag = Tag.query.filter(Tag.name == tag_name).first()
@@ -67,8 +67,8 @@ def editPost(post_id, username, password, content, publish):
         for custom_field in content['custom_fields']:
             if custom_field['key'] == 'subtitle':
                 post.subtitle = custom_field['value']
-            elif custom_field['key'] == 'lead_img':
-                post.lead_img = custom_field['value']
+            elif custom_field['key'] == 'hero_img':
+                post.hero_img = custom_field['value']
     tag_names = string.split(content['mt_tags'], ',')
     tags = []
     for tag_name in tag_names:
@@ -105,8 +105,8 @@ def getPost(post_id, username, password):
             'value': post.subtitle
         },
         {
-            'key': 'lead_img',
-            'value': post.lead_img
+            'key': 'hero_img',
+            'value': post.hero_img
         }
     ]
     item['wp_slug'] = post.slug
@@ -138,8 +138,8 @@ def getRecentPosts(blogid, username, password, numberOfPosts):
                 'value': post.subtitle
             },
             {
-                'key': 'lead_img',
-                'value': post.lead_img
+                'key': 'hero_img',
+                'value': post.hero_img
             }
         ]
         tags = []
