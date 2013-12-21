@@ -16,30 +16,41 @@ Python on the backend, JS+SCSS on the front. Fully responsive, mobile-first blog
 
 # Usage
 
-1. Create db (not ready yet)
+1. Edit the app config file
+
+    In your `instance/` directory, create a `config.py` file that declares the following variables:
+
+    - `SQLALCHEMY_DATABASE_URI`
+    - `SECRET_KEY` (a random string that is used for connections with the XML-RPC API)
+
+2. Create and initialize the DB
+    
+    For local development, just set up a simple SQL database in the flavor of your choice - Backflask uses SQLAlchemy to manage the DB, so as long as your `SQLALCHEMY_DATABASE_URI` config variable is set correctly, it will connect to any existing DB.
+
+    In SQL:
     ```sql
-    CREATE ...
+    CREATE DATABASE backflask;
     ```
-2. Create db config file (not ready yet)
 
-    Modify `db-config-example.cfg` and save to `db-config.cfg`
+    Then run `pysetup.py` to create an Admin user, an example Category, and an example Post.
 
-3. `npm install` (loades package.json dependencies)
-4. `grunt`
+3. `npm install` (loades package.json dependencies, including Grunt)
+
+4. `grunt` (not ready)
     - load bower packages
     - build scripts + stylesheets (dev, uncompressed)
 
-5. `grunt server`
+5. `grunt server` (not ready)
     - flask dev server
     - watch for python changes (and script+style+template), livereload
 
-6. `grunt build`
+6. `grunt build` (not ready)
     - build for production
         - precompile handlebar templates
         - concat and uglify
         - figure out how to load different scripts in templates for production
 
-7. `grunt release`
+7. `grunt release` (not ready)
     - git flow create release, push
 
 # Components:
