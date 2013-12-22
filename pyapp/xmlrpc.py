@@ -39,6 +39,12 @@ def xmlpost(post):
         }]
     }
 
+def xmlcategory(category):
+    return {
+        'categoryId': category.id,
+        'categoryName': category.name
+    }
+
 @metaweblog.register
 def newPost(blog_id, username, password, content, publish):
     user = authenticate(username, password)
@@ -137,11 +143,7 @@ def getTags(blogid, username, password):
 
 @wordpress.register
 def getCategories(blogid, username, password):
-    return [{
-            'categoryId': category.id,
-            'categoryName': category.name,
-            'categoryDescription': category.description
-        } for category in Category.query.all()]
+    return [xmlcategory(category) for category in Category.query.all()]
 
 
 @moveabletype.register
@@ -159,13 +161,7 @@ def setPostCategories(post_id, username, password, categories):
 @moveabletype.register
 def getPostCategories(post_id, username, password):
     category = Post.query.get(post_id).category
-    if category is not None:
-        category = {
-            'categoryId': category.id,
-            'categoryName': category.name,
-            'categoryDescription': category.description
-        }
-    return [category] if category else []
+    return [xmlcategory(category)] if category else []
 
 
 @moveabletype.register

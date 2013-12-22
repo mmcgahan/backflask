@@ -17,8 +17,8 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
-    # category = db.relationship('Category',
-    #                            backref=db.backref('posts', lazy='dynamic'))
+    category = db.relationship('Category',
+                               backref=db.backref('posts', lazy='dynamic'))
     title = db.Column(db.String(255), nullable=False)
     subtitle = db.Column(db.String(255))
     _status = db.Column(db.Integer, default=1)
