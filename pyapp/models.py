@@ -21,11 +21,11 @@ class Post(db.Model):
                                backref=db.backref('posts', lazy='dynamic'))
     title = db.Column(db.String(255), nullable=False)
     subtitle = db.Column(db.String(255))
-    _status = db.Column(db.Integer, default=1)
+    _status = db.Column(db.Integer, default=1)  # internal status code
     teaser = db.Column(db.String(511))
     hero_img = db.Column(db.String(255))
-    _raw_content = db.Column(db.Text)
-    _html_content = db.Column(db.Text)
+    _raw_content = db.Column(db.Text)  # markdown
+    _html_content = db.Column(db.Text)  # html
     slug = db.Column(db.String(255), nullable=False, unique=True)
     create_date = db.Column(db.TIMESTAMP, default=sql.functions.current_timestamp())
 
