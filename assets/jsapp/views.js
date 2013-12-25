@@ -1,5 +1,5 @@
 define(
-    ['underscore', 'backbone', 'handlebars'],
+    ['lodash', 'backbone', 'handlebars'],
     function(_, Backbone, Handlebars) {
         'use strict';
         var Views = {

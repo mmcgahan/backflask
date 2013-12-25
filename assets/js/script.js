@@ -2,24 +2,27 @@ requirejs.config({
     baseUrl: '/assets',
     paths: {
         'jquery': 'vendor/jquery/jquery',
-        'underscore': 'vendor/lodash/dist/lodash',
+        'lodash': 'vendor/lodash/dist/lodash',
         'backbone': 'vendor/backbone/backbone',
         'handlebars': 'vendor/handlebars/handlebars.runtime',
-        'foundation': 'vendor/foundation/js/foundation',
-
-        'views': 'jsapp/views',
-        'models': 'jsapp/models',
-        'routes': 'jsapp/routes'
+        'foundation': 'vendor/foundation/js/foundation'
     },
     shim: {
+        'handlebars': {
+            'exports': 'Handlebars'
+        },
+        'lodash': {
+            'exports': '_'
+        },
         'backbone': {
-            deps: ['underscore']
+            'deps': ['jquery', 'lodash'],
+            'exports': 'Backbone'
         }
-    }
+    },
 });
 
-require(['jquery', 'backbone', 'routes', 'foundation'],
-    function($, Backbone, Router) {
+require(['jquery', 'lodash', 'backbone', 'jsapp/routes', 'foundation'],
+    function($, _, Backbone, Router) {
         'use strict';
 
         $(document).foundation();

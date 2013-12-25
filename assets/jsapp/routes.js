@@ -1,5 +1,5 @@
 define(
-    ['backbone', 'views'],
+    ['backbone', 'jsapp/views'],
     function(Backbone, Views) {
         'use strict';
         var Router = Backbone.Router.extend({
