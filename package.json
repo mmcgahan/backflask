@@ -1,6 +1,6 @@
 {
   "name": "backflask",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "devDependencies": {
     "node-sass": "~0.7.0",
     "grunt": "~0.4.1",
