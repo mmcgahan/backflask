@@ -24,8 +24,9 @@ def posts():
     data = { "foo": "all posts" }
     return render_template('base.html', **data)
 
-@app.route('/posts/<post_slug>', methods=['PATCH', 'GET'])
+@app.route('/posts/<post_slug>', methods=['GET'])
 def post(post_slug):
+    # replace this with a generic catchall view
     data = { "foo": "single post" }
     return render_template('base.html', **data)
 

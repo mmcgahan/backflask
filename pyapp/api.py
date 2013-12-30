@@ -1,5 +1,4 @@
-import json
-from flask import Blueprint
+from flask import Blueprint, jsonify
 from .models import Post
 
 """ Backflask JSON API module/blueprint
@@ -16,4 +15,9 @@ api_blueprint = Blueprint('api', __name__)
 @api_blueprint.route('/posts', methods=['GET'])
 def posts():
     posts = Post.get_recent(num_posts=4)
-    return json.dumps({ "posts": [post.serialized for post in posts] })
+    return jsonify({ "posts": [post.serialized for post in posts] })
+
+@api_blueprint.route('/posts/<post_slug>', methods=['GET'])
+def post(post_slug):
+    post = Post.query.filter(Post.slug == post_slug).first_or_404()
+    return jsonify(post.serialized)
