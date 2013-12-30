@@ -2,6 +2,7 @@
 *.pyc
 /assets/css/*
 /assets/vendor/*
+/assets/templates/compiled.js
 /node_modules/*
 /instance/*
 !/instance/README*

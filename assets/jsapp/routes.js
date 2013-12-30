@@ -1,14 +1,16 @@
 define(
-    ['backbone', 'jsapp/views'],
-    function(Backbone, Views) {
+    ['backbone', 'jsapp/views', 'jsapp/models'],
+    function(Backbone, Views, Models) {
         'use strict';
         var Router = Backbone.Router.extend({
-            routes:{
+            'routes':{
                 'posts/:post': 'renderPost'
             },
-            renderPost: function(post) {
-                this.postView = new Views.PostView({ model: post });
-                this.postView.render();
+            'renderPost': function(postSlug) {
+                var postInstance = new Models.Post({ slug: postSlug });
+                this.postView = new Views.PostView({ model: postInstance });
+                this.postView.listenToOnce(postInstance, 'change', this.postView.render);
+                postInstance.fetch();
             }
         });
         return Router;

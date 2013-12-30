@@ -1,13 +1,14 @@
 requirejs.config({
-    baseUrl: '/assets',
-    paths: {
+    'baseUrl': '/assets',
+    'paths': {
         'jquery': 'vendor/jquery/jquery',
         'lodash': 'vendor/lodash/dist/lodash',
         'backbone': 'vendor/backbone/backbone',
         'handlebars': 'vendor/handlebars/handlebars.runtime',
-        'foundation': 'vendor/foundation/js/foundation'
+        'foundation': 'vendor/foundation/js/foundation',
+        'templates': 'templates/compiled'
     },
-    shim: {
+    'shim': {
         'handlebars': {
             'exports': 'Handlebars'
         },
@@ -17,6 +18,9 @@ requirejs.config({
         'backbone': {
             'deps': ['jquery', 'lodash'],
             'exports': 'Backbone'
+        },
+        'templates': {
+            'deps': ['handlebars']
         }
     },
 });
@@ -28,5 +32,5 @@ require(['jquery', 'lodash', 'backbone', 'jsapp/routes', 'foundation'],
         $(document).foundation();
         // var router = new Router();
         new Router();
-        Backbone.history.start({pushState: true});
+        Backbone.history.start({'pushState': true});
     });
