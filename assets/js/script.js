@@ -6,6 +6,10 @@ requirejs.config({
         'backbone': 'vendor/backbone/backbone',
         'handlebars': 'vendor/handlebars/handlebars.runtime',
         'foundation': 'vendor/foundation/js/foundation',
+        'models': 'jsapp/models',
+        'views': 'jsapp/views',
+        'collections': 'jsapp/collections',
+        'routes': 'jsapp/routes',
         'templates': 'templates/compiled'
     },
     'shim': {
@@ -25,7 +29,7 @@ requirejs.config({
     },
 });
 
-require(['jquery', 'lodash', 'backbone', 'jsapp/routes', 'foundation'],
+require(['jquery', 'lodash', 'backbone', 'routes', 'foundation'],
     function($, _, Backbone, Router) {
         'use strict';
 
