@@ -1,6 +1,6 @@
 define(
-    ['lodash', 'backbone', 'handlebars', 'templates'],
-    function(_, Backbone, Handlebars) {
+    ['lodash', 'backbone', 'templates'],
+    function(_, Backbone, Templates) {
         'use strict';
         var Views = {
             'Root': Backbone.View.extend({
@@ -14,10 +14,10 @@ define(
         };
 
         Views.Post = Views.Root.extend({
-            'template': Handlebars.templates.post
+            'template': Templates.post
         });
         Views.PostList = Views.Root.extend({
-            'template': Handlebars.templates.posts
+            'template': Templates.posts
         });
 
         return Views;

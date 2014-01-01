@@ -1,7 +1,8 @@
 {{#each model}}
 <ul class="posts">
     <li class="post">
-        <a href="{{uri}}">{{title}}</a>
+        <p>Read <a href="{{uri}}">{{title}}</a></p>
+        {{#if teaser}}<p>{{teaser}}</p>{{/if}}
     </li>
 </ul>
 {{/each}}

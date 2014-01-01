@@ -24,7 +24,8 @@ requirejs.config({
             'exports': 'Backbone'
         },
         'templates': {
-            'deps': ['handlebars']
+            'deps': ['handlebars'],
+            'exports': 'Templates'
         }
     },
 });
