@@ -3,6 +3,7 @@ from markdown import markdown
 from sqlalchemy import sql
 from pyapp import db, utils
 # from flask.ext.scrypt import generate_random_salt, generate_password_hash, check_password_hash
+from flask import url_for
 from flask.ext import scrypt
 
 """ Post-Tag many-to-many join table """
@@ -86,7 +87,7 @@ class Post(db.Model):
             'title': self.title,
             'subtitle': self.subtitle,
             'slug': self.slug,
-            'uri': '/posts/%s' % self.slug,
+            'uri': url_for('post', post_slug=self.slug),
             'teaser': self.teaser,
             'hero_img': self.hero_img,
             'content': self.content,

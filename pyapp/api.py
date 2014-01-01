@@ -15,7 +15,10 @@ api_blueprint = Blueprint('api', __name__)
 @api_blueprint.route('/posts', methods=['GET'])
 def posts():
     posts = Post.get_recent(num_posts=4)
-    return jsonify({ "posts": [post.serialized for post in posts] })
+    # need to decide whether to return full post.serialized or shorter summary
+    # info - maybe just drop body content to make response smaller
+    # jsonify needs dict arg, which makes collection parsing a little more complicated
+    return jsonify(posts=[post.serialized for post in posts])
 
 @api_blueprint.route('/posts/<post_slug>', methods=['GET'])
 def post(post_slug):
