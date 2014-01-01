@@ -1,4 +1,4 @@
-var _ = require('lodash');
+var _ = require('underscore');
 var Backbone = require('backbone');
 var Views = require('./views');
 var Models = require('./models');

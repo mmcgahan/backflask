@@ -61,11 +61,7 @@ module.exports = function(grunt) {
                             exports: '$'
                         },
                         underscore: {
-                            path: paths.bower + 'underscore/underscore.js',
-                            exports: '_'
-                        },
-                        lodash: {
-                            path: paths.bower + 'lodash/dist/lodash.js',
+                            path: paths.bower + 'lodash/dist/lodash.underscore.js',
                             exports: '_'
                         },
                         handlebars: {
