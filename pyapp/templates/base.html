@@ -9,9 +9,7 @@
         {% block styles -%}
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
         {%- endblock styles %}
-        {% block headscripts %}
-            <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-            {{headscripts}}
+        {% block headscripts %}{{headscripts}}
         {% endblock headscripts %}
     </head>
     <body class="{{body_class}}">
@@ -34,6 +32,7 @@
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius, ad, et, omnis quasi sunt ab dignissimos pariatur perferendis ipsum voluptate ipsa ex accusamus culpa maiores ratione veritatis blanditiis minus reprehenderit?</p>
         {% endblock %}
         {% block scripts %}
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
         {% for scriptname in scriptnames %}
             <script type="text/javascript" src="{{ url_for('static', filename=scriptname) }}"></script>
         {% endfor %}
