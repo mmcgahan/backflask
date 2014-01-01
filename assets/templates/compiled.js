@@ -35,11 +35,15 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n<ul class=\"posts\">\n    <li class=\"post\">\n        <p>";
+  buffer += "\n<ul class=\"posts\">\n    <li class=\"post\">\n        <a href=\"";
+  if (stack1 = helpers.uri) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.uri; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "\">";
   if (stack1 = helpers.title) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.title; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</p>\n    </li>\n</ul>\n";
+    + "</a>\n    </li>\n</ul>\n";
   return buffer;
   }
 
