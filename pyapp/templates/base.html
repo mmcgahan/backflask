@@ -10,7 +10,7 @@
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
         {%- endblock styles %}
         {% block headscripts %}
-            <script data-main="{{ url_for('static', filename='js/script.js') }}" src="{{ url_for('static', filename='vendor/requirejs/require.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/main.js') }}"></script>
             {{headscripts}}
         {% endblock headscripts %}
     </head>

@@ -2,10 +2,10 @@
   "name": "backflask",
   "dependencies": {},
   "devDependencies": {
-    "handlebars": "~1.1.2",
     "lodash": "~2.4.0",
     "backbone": "~1.1.0",
-    "foundation": "zurb/bower-foundation",
-    "requirejs": "~2.1.9"
+    "foundation": "~5.0",
+    "underscore": "~1.5.2",
+    "handlebars": "~1.2.1"
   }
 }

@@ -1,8 +1,9 @@
 *.DS_Store
 *.pyc
+.sass-cache/
 /assets/css/*
 /assets/vendor/*
-/assets/templates/compiled.js
-/node_modules/*
+/assets/jsapp/templates.js
+/node_modules/
 /instance/*
 !/instance/README*
