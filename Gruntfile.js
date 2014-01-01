@@ -86,7 +86,15 @@ module.exports = function(grunt) {
                     }
                 }
             }
-        } //,
+        },
+        uglify: {
+            default: {
+                files: {
+                    'assets/js/main.ugly.js': paths.js + 'main.js'
+                }
+            }
+        }
+        //,
         // concat: {
         //     'assets/js/main.js': ['vendor/vendor.js', paths.js + 'app.js']
         // }
@@ -95,10 +103,11 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-handlebars');
     grunt.loadNpmTasks('grunt-browserify');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('js', ['handlebars', 'browserify']);
+    grunt.registerTask('js', ['handlebars', 'browserify', 'uglify']);
     grunt.registerTask('build', ['sass', 'js']);
     grunt.registerTask('default', ['build','watch']);
 };

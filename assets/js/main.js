@@ -1795,7 +1795,9 @@ global.jquery = require("jquery");
 
 }).call(global, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
-},{"jquery":"daMkO5","underscore":"e3Fgic"}],"bC6UmS":[function(require,module,exports){
+},{"jquery":"daMkO5","underscore":"e3Fgic"}],"foundation":[function(require,module,exports){
+module.exports=require('bC6UmS');
+},{}],"bC6UmS":[function(require,module,exports){
 var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {};(function browserifyShim(module, exports, define, browserify_shim__define__module__export__) {
 
 ; global.jquery = require("jquery");
@@ -2222,9 +2224,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
 
 }).call(global, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
-},{"jquery":"daMkO5"}],"foundation":[function(require,module,exports){
-module.exports=require('bC6UmS');
-},{}],"handlebars":[function(require,module,exports){
+},{"jquery":"daMkO5"}],"handlebars":[function(require,module,exports){
 module.exports=require('UqPV+0');
 },{}],"UqPV+0":[function(require,module,exports){
 var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {};(function browserifyShim(module, exports, define, browserify_shim__define__module__export__) {
