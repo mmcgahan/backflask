@@ -16,14 +16,12 @@ $(function() {
         .foundation()
         .on('click', 'a[href]:not([data-bypass])', function(e) {
             // Get the absolute anchor href.
-            var href = { prop: $(this).prop('href'), attr: $(this).attr('href') };
+            var href = { prop: this.href, attr: this.getAttribute('href') };
             // Get the absolute root.
             var root = location.protocol + '//' + location.host + '/';
 
             // Ensure the root is part of the anchor href, meaning it's relative.
             if (href.prop.slice(0, root.length) === root) {
-                // Stop the default event to ensure the link will not cause a page
-                // refresh.
                 e.preventDefault();
 
                 // `Backbone.history.navigate` is sufficient for all Routers and will
@@ -40,33 +38,39 @@ var Models = require('./models');
 
 var API_PREFIX = '/api/';
 
-module.exports = {
-    'Posts': Backbone.Collection.extend({
-        'url': API_PREFIX + 'posts',
-        'model': Models.Post,
-        'parse': function(response) {
-            'use strict';
-            return response.posts;
-        }
-    })
-};
+module.exports = (function(Backbone, Models) {
+    'use strict';
+
+    return {
+        'Posts': Backbone.Collection.extend({
+            'url': API_PREFIX + 'posts',
+            'model': Models.Post,
+            'parse': function(response) {
+                return response.posts;
+            }
+        })
+    };
+}(Backbone, Models));
 
 },{"./models":3,"backbone":"RRT8B4"}],3:[function(require,module,exports){
 var Backbone = require('backbone');
 
-var API_PREFIX = '/api/';
-var Models = {
-    'Post': Backbone.Model.extend({
-        'idAttribute': 'slug',
-        'urlRoot': API_PREFIX + 'posts'
-    })
-};
-Models.Posts = Backbone.Model.extend({
-    'model': Models.Post,
-    'url': API_PREFIX + 'posts'
-});
+module.exports = (function(Backbone) {
+    'use strict';
+    var API_PREFIX = '/api/';
+    var Models = {
+        'Post': Backbone.Model.extend({
+            'idAttribute': 'slug',
+            'urlRoot': API_PREFIX + 'posts'
+        })
+    };
+    Models.Posts = Backbone.Model.extend({
+        'model': Models.Post,
+        'url': API_PREFIX + 'posts'
+    });
 
-module.exports = Models;
+    return Models;
+}(Backbone));
 
 },{"backbone":"RRT8B4"}],4:[function(require,module,exports){
 var _ = require('underscore');
@@ -76,30 +80,32 @@ var Models = require('./models');
 var Collections = require('./collections');
 
 function fetchRender(model, ViewClass) {
+    'use strict';
     var view = new ViewClass({ 'model': model });
     model.fetch({
         'success': _.bind(view.render, view)
     });
 }
 
-var Router = Backbone.Router.extend({
-    'routes':{
-        // could be simplified by always grabbing collection
-        'posts': 'posts',
-        'posts/:post': 'post'
-    },
-    'posts': function() {
-        // might be good to cache posts collection and only fetch if empty
-        fetchRender(new Collections.Posts(), Views.PostList);
-    },
-    'post': function(postSlug) {
-        // collection-free fetch and render
-        // would be good to cache post to avoid subsequent fetch
-        fetchRender(new Models.Post({ slug: postSlug }), Views.Post);
-    }
-});
-
-module.exports = Router;
+module.exports = (function(Backbone, Views, Models, Collections, fetchRender) {
+    'use strict';
+    return Backbone.Router.extend({
+        'routes':{
+            // could be simplified by always grabbing collection
+            'posts': 'posts',
+            'posts/:post': 'post'
+        },
+        'posts': function() {
+            // might be good to cache posts collection and only fetch if empty
+            fetchRender(new Collections.Posts(), Views.PostList);
+        },
+        'post': function(postSlug) {
+            // collection-free fetch and render
+            // would be good to cache post to avoid subsequent fetch
+            fetchRender(new Models.Post({ slug: postSlug }), Views.Post);
+        }
+    });
+}(Backbone, Views, Models, Collections, fetchRender));
 
 },{"./collections":2,"./models":3,"./views":6,"backbone":"RRT8B4","underscore":"e3Fgic"}],5:[function(require,module,exports){
 module.exports = function(Handlebars) {
@@ -181,30 +187,30 @@ var Backbone = require('backbone');
 var Handlebars = require('handlebars');
 var Templates = require('./templates')(Handlebars);
 
+module.exports = (function(Backbone, Templates) {
+    'use strict';
+    var Views = {
+        'Root': Backbone.View.extend({
+            'el': document.body,
+            'template': function() {},  // override this
+            'render': function() {
+                this.$el.html(this.template({ 'model': this.model.toJSON() }));
+                return this;
+            }
+        })
+    };
 
-var Views = {
-    'Root': Backbone.View.extend({
-        'el': document.body,
-        'template': function() {},  // override this
-        'render': function() {
-            this.$el.html(this.template({ 'model': this.model.toJSON() }));
-            return this;
-        }
-    })
-};
+    Views.Post = Views.Root.extend({
+        'template': Templates.post
+    });
+    Views.PostList = Views.Root.extend({
+        'template': Templates.posts
+    });
 
-Views.Post = Views.Root.extend({
-    'template': Templates.post
-});
-Views.PostList = Views.Root.extend({
-    'template': Templates.posts
-});
+    return Views;
+}(Backbone, Templates));
 
-module.exports = Views;
-
-},{"./templates":5,"backbone":"RRT8B4","handlebars":"UqPV+0"}],"backbone":[function(require,module,exports){
-module.exports=require('RRT8B4');
-},{}],"RRT8B4":[function(require,module,exports){
+},{"./templates":5,"backbone":"RRT8B4","handlebars":"UqPV+0"}],"RRT8B4":[function(require,module,exports){
 var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {};(function browserifyShim(module, exports, define, browserify_shim__define__module__export__) {
 
 ; global.underscore = require("underscore");
@@ -1795,8 +1801,8 @@ global.jquery = require("jquery");
 
 }).call(global, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
-},{"jquery":"daMkO5","underscore":"e3Fgic"}],"foundation":[function(require,module,exports){
-module.exports=require('bC6UmS');
+},{"jquery":"daMkO5","underscore":"e3Fgic"}],"backbone":[function(require,module,exports){
+module.exports=require('RRT8B4');
 },{}],"bC6UmS":[function(require,module,exports){
 var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {};(function browserifyShim(module, exports, define, browserify_shim__define__module__export__) {
 
@@ -2224,8 +2230,8 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
 
 }).call(global, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
-},{"jquery":"daMkO5"}],"handlebars":[function(require,module,exports){
-module.exports=require('UqPV+0');
+},{"jquery":"daMkO5"}],"foundation":[function(require,module,exports){
+module.exports=require('bC6UmS');
 },{}],"UqPV+0":[function(require,module,exports){
 var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {};(function browserifyShim(module, exports, define, browserify_shim__define__module__export__) {
 /*!
@@ -2751,6 +2757,8 @@ var __module0__ = (function(__dependency1__, __dependency2__, __dependency3__, _
 
 }).call(global, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
+},{}],"handlebars":[function(require,module,exports){
+module.exports=require('UqPV+0');
 },{}],"jquery":[function(require,module,exports){
 module.exports=require('daMkO5');
 },{}],"daMkO5":[function(require,module,exports){
