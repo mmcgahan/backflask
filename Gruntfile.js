@@ -51,8 +51,7 @@ module.exports = function(grunt) {
             app: {
                 src: [
                     // paths.templates + '*.handlebars',  // TODO hbsfy
-                    paths.jsapp + '*.js',
-                    paths.js + 'script.js'
+                    paths.jsapp + '*.js'
                 ],
                 dest: paths.js + 'main.js',
                 options: {
@@ -96,17 +95,12 @@ module.exports = function(grunt) {
                 }
             }
         }
-        //,
-        // concat: {
-        //     'assets/js/main.js': ['vendor/vendor.js', paths.js + 'app.js']
-        // }
     });
 
     grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-handlebars');
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerTask('js', ['handlebars', 'browserify', 'uglify']);

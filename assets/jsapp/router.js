@@ -17,7 +17,7 @@ module.exports = (function(Backbone, Views, Models, Collections, fetchRender) {
     return Backbone.Router.extend({
         'routes':{
             // could be simplified by always grabbing collection
-            '/': 'posts',  // for now - probably change in future
+            '': 'posts',  // for now - probably change in future
             'posts': 'posts',
             'posts/:post': 'post'
         },
