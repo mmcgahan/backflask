@@ -1,4 +1,4 @@
-Python on the backend, JS+SCSS on the front. Fully responsive, mobile-first blog-oriented framework.
+Python on the backend, JS+SCSS on the front. Fully responsive, mobile-first blog-oriented framework. This will serve as a test bed for different front end JavaScript application frameworks, starting with Backbone.js and then moving on to Angular, Ember, React... whatever looks interesting and can be learned from.
 
 # Goals
 
@@ -61,6 +61,7 @@ Python on the backend, JS+SCSS on the front. Fully responsive, mobile-first blog
     - Base template generation (Jinja2)
     - JSON API
     - Authentication for remote editing
+    - XML-RPC
     - SQLAlchemy
     - scrypt
 2. PostgreSQL
@@ -71,7 +72,7 @@ Python on the backend, JS+SCSS on the front. Fully responsive, mobile-first blog
 2. Lodash
 3. Handlebars.js
 4. Foundation
-5. Require.js
+5. Require.js or browserify - this might get a blog post
 
 ## Dev tools
 
@@ -79,5 +80,6 @@ Python on the backend, JS+SCSS on the front. Fully responsive, mobile-first blog
     - watch
     - connect
     - uglify
+    - sass
+    - handlebars
 2. Bower
-3. SASS + Compass + libsass
