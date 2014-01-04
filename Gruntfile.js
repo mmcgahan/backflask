@@ -31,9 +31,9 @@ module.exports = function(grunt) {
                 tasks: ['sass']
             }
             // handlebars
-            // js - browserify, uglify + source map
+            // js - browserify, uglify
         },
-        handlebars: {
+        handlebars: {  // should replace this with hbsfy transform
             compile: {
                 options: {
                     namespace: 'Templates',
@@ -50,11 +50,13 @@ module.exports = function(grunt) {
         browserify: {
             app: {
                 src: [
+                    // paths.templates + '*.handlebars',  // TODO hbsfy
                     paths.jsapp + '*.js',
                     paths.js + 'script.js'
                 ],
                 dest: paths.js + 'main.js',
                 options: {
+                    // transform: ['hbsfy'],  // TODO
                     shim: {
                         jquery: {
                             path: paths.bower + 'jquery/jquery.js',
@@ -87,7 +89,7 @@ module.exports = function(grunt) {
                 }
             }
         },
-        uglify: {
+        uglify: {  // TODO sourcemaps
             default: {
                 files: {
                     'assets/js/main.ugly.js': paths.js + 'main.js'

@@ -92,6 +92,7 @@ module.exports = (function(Backbone, Views, Models, Collections, fetchRender) {
     return Backbone.Router.extend({
         'routes':{
             // could be simplified by always grabbing collection
+            '/': 'posts',  // for now - probably change in future
             'posts': 'posts',
             'posts/:post': 'post'
         },
@@ -191,7 +192,7 @@ module.exports = (function(Backbone, Templates) {
     'use strict';
     var Views = {
         'Root': Backbone.View.extend({
-            'el': document.body,
+            'el': document.getElementById('body'),
             'template': function() {},  // override this
             'render': function() {
                 this.$el.html(this.template({ 'model': this.model.toJSON() }));
@@ -210,7 +211,9 @@ module.exports = (function(Backbone, Templates) {
     return Views;
 }(Backbone, Templates));
 
-},{"./templates":5,"backbone":"RRT8B4","handlebars":"UqPV+0"}],"RRT8B4":[function(require,module,exports){
+},{"./templates":5,"backbone":"RRT8B4","handlebars":"UqPV+0"}],"backbone":[function(require,module,exports){
+module.exports=require('RRT8B4');
+},{}],"RRT8B4":[function(require,module,exports){
 var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {};(function browserifyShim(module, exports, define, browserify_shim__define__module__export__) {
 
 ; global.underscore = require("underscore");
@@ -1801,8 +1804,8 @@ global.jquery = require("jquery");
 
 }).call(global, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
-},{"jquery":"daMkO5","underscore":"e3Fgic"}],"backbone":[function(require,module,exports){
-module.exports=require('RRT8B4');
+},{"jquery":"daMkO5","underscore":"e3Fgic"}],"foundation":[function(require,module,exports){
+module.exports=require('bC6UmS');
 },{}],"bC6UmS":[function(require,module,exports){
 var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {};(function browserifyShim(module, exports, define, browserify_shim__define__module__export__) {
 
@@ -2230,8 +2233,8 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
 
 }).call(global, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
-},{"jquery":"daMkO5"}],"foundation":[function(require,module,exports){
-module.exports=require('bC6UmS');
+},{"jquery":"daMkO5"}],"handlebars":[function(require,module,exports){
+module.exports=require('UqPV+0');
 },{}],"UqPV+0":[function(require,module,exports){
 var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {};(function browserifyShim(module, exports, define, browserify_shim__define__module__export__) {
 /*!
@@ -2757,8 +2760,6 @@ var __module0__ = (function(__dependency1__, __dependency2__, __dependency3__, _
 
 }).call(global, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
-},{}],"handlebars":[function(require,module,exports){
-module.exports=require('UqPV+0');
 },{}],"jquery":[function(require,module,exports){
 module.exports=require('daMkO5');
 },{}],"daMkO5":[function(require,module,exports){

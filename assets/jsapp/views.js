@@ -6,7 +6,7 @@ module.exports = (function(Backbone, Templates) {
     'use strict';
     var Views = {
         'Root': Backbone.View.extend({
-            'el': document.body,
+            'el': document.getElementById('body'),
             'template': function() {},  // override this
             'render': function() {
                 this.$el.html(this.template({ 'model': this.model.toJSON() }));
