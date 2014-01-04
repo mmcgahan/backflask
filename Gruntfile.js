@@ -25,13 +25,17 @@ module.exports = function(grunt) {
         },
         watch: {
             grunt: { files: ['Gruntfile.js'] },
-
-            sass: {
+            styles: {
                 files: paths.sass + '**/*.scss',
-                tasks: ['sass']
+                tasks: ['styles']
+            },
+            scripts: {
+                files: [
+                    paths.jsapp + '*.js',
+                    paths.templates + '*.handlebars'
+                ],
+                tasks: ['scripts']
             }
-            // handlebars
-            // js - browserify, uglify
         },
         handlebars: {  // should replace this with hbsfy transform
             compile: {
@@ -103,8 +107,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('js', ['handlebars', 'browserify', 'uglify']);
-    grunt.registerTask('build', ['sass', 'js']);
+    grunt.registerTask('scripts', ['handlebars', 'browserify', 'uglify']);
+    grunt.registerTask('build', ['styles', 'scripts']);
     grunt.registerTask('default', ['build','watch']);
 };
 
