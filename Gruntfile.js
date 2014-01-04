@@ -107,6 +107,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
+    grunt.registerTask('styles', ['sass']);
     grunt.registerTask('scripts', ['handlebars', 'browserify', 'uglify']);
     grunt.registerTask('build', ['styles', 'scripts']);
     grunt.registerTask('default', ['build','watch']);
