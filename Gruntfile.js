@@ -25,15 +25,19 @@ module.exports = function(grunt) {
         },
         watch: {
             grunt: { files: ['Gruntfile.js'] },
-
-            sass: {
+            styles: {
                 files: paths.sass + '**/*.scss',
-                tasks: ['sass']
+                tasks: ['styles']
+            },
+            scripts: {
+                files: [
+                    paths.jsapp + '*.js',
+                    paths.templates + '*.handlebars'
+                ],
+                tasks: ['scripts']
             }
-            // handlebars
-            // js - browserify, uglify + source map
         },
-        handlebars: {
+        handlebars: {  // should replace this with hbsfy transform
             compile: {
                 options: {
                     namespace: 'Templates',
@@ -50,11 +54,12 @@ module.exports = function(grunt) {
         browserify: {
             app: {
                 src: [
-                    paths.jsapp + '*.js',
-                    paths.js + 'script.js'
+                    // paths.templates + '*.handlebars',  // TODO hbsfy
+                    paths.jsapp + '*.js'
                 ],
                 dest: paths.js + 'main.js',
                 options: {
+                    // transform: ['hbsfy'],  // TODO
                     shim: {
                         jquery: {
                             path: paths.bower + 'jquery/jquery.js',
@@ -87,28 +92,24 @@ module.exports = function(grunt) {
                 }
             }
         },
-        uglify: {
+        uglify: {  // TODO sourcemaps
             default: {
                 files: {
                     'assets/js/main.ugly.js': paths.js + 'main.js'
                 }
             }
         }
-        //,
-        // concat: {
-        //     'assets/js/main.js': ['vendor/vendor.js', paths.js + 'app.js']
-        // }
     });
 
     grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-handlebars');
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('js', ['handlebars', 'browserify', 'uglify']);
-    grunt.registerTask('build', ['sass', 'js']);
+    grunt.registerTask('styles', ['sass']);
+    grunt.registerTask('scripts', ['handlebars', 'browserify', 'uglify']);
+    grunt.registerTask('build', ['styles', 'scripts']);
     grunt.registerTask('default', ['build','watch']);
 };
 

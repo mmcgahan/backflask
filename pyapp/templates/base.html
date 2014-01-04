@@ -13,6 +13,16 @@
         {% endblock headscripts %}
     </head>
     <body class="{{body_class}}">
+        <nav id='nav'>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/posts">Posts</a></li>
+            </ul>
+        </nav>
+        <header>
+
+        </header>
+        <div id="body">
         {% block body %}
             <h1>Foo: {{foo}}</h1>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, mollitia, sunt quibusdam iusto iste animi quidem maiores fugiat atque unde veniam libero repudiandae odit possimus est ab voluptates hic porro?</p>
@@ -31,6 +41,11 @@
             <cite>Citation</cite>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius, ad, et, omnis quasi sunt ab dignissimos pariatur perferendis ipsum voluptate ipsa ex accusamus culpa maiores ratione veritatis blanditiis minus reprehenderit?</p>
         {% endblock %}
+        </div>
+
+        <footer>
+            <p>This is the footer</p>
+        </footer>
         {% block scripts %}
         <script src="{{ url_for('static', filename='js/main.ugly.js') }}"></script>
         {% for scriptname in scriptnames %}
