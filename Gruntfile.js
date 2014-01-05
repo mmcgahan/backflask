@@ -62,9 +62,14 @@ module.exports = function(grunt) {
                     debug: true,
                     // transform: ['hbsfy'],  // TODO
                     shim: {
-                        jquery: {
-                            path: paths.bower + 'zepto/zepto.js',
+                        zepto: {
+                            path: paths.bower + 'zepto/src/zepto.js',
                             exports: '$'
+                        },
+                        zeptofx: {
+                            path: paths.bower + 'zepto/src/fx.js',
+                            depends: { zepto: '$' },
+                            exports: '$.fx'
                         },
                         underscore: {
                             path: paths.bower + 'lodash/dist/lodash.underscore.js',
@@ -77,16 +82,14 @@ module.exports = function(grunt) {
                         backbone: {
                             path: paths.bower + 'backbone/backbone.js',
                             depends: {
-                                underscore: 'underscore',
-                                jquery: 'jquery'
+                                underscore: '_',
+                                zepto: '$'
                             },
                             exports: 'Backbone'
                         },
                         foundation: {
                             path: paths.bower + 'foundation/js/foundation.js',
-                            depends: {
-                                jquery: 'jquery'
-                            },
+                            depends: { zeptofx: '$.fx', zepto: 'jQuery' },
                             exports: '$.fn.foundation'
                         }
                     }

@@ -69,9 +69,9 @@ Python on the backend, JS+SCSS on the front. Fully responsive, mobile-first blog
 
 1. Backbone.js
 2. Lodash
-3. Handlebars.js
+3. Handlebars
 4. Foundation
-5. Require.js
+5. Browserify (or Require.js?)
 
 ## Dev tools
 
@@ -79,5 +79,6 @@ Python on the backend, JS+SCSS on the front. Fully responsive, mobile-first blog
     - watch
     - connect
     - uglify
+    - livereload
 2. Bower
 3. SASS + Compass + libsass

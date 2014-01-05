@@ -1,5 +1,5 @@
 require('foundation');
-var $ = require('jquery');
+var $ = require('zepto');
 var Backbone = require('backbone');
 var Router = require('../jsapp/router');
 
