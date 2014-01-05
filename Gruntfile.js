@@ -59,10 +59,11 @@ module.exports = function(grunt) {
                 ],
                 dest: paths.js + 'main.js',
                 options: {
+                    debug: true,
                     // transform: ['hbsfy'],  // TODO
                     shim: {
                         jquery: {
-                            path: paths.bower + 'jquery/jquery.js',
+                            path: paths.bower + 'zepto/zepto.js',
                             exports: '$'
                         },
                         underscore: {
@@ -96,7 +97,11 @@ module.exports = function(grunt) {
             default: {
                 files: {
                     'assets/js/main.ugly.js': paths.js + 'main.js'
+                },
+                options: {
+                    sourceMap: function() { return 'main.ugly.js.map'; }
                 }
+
             }
         }
     });
@@ -108,8 +113,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerTask('styles', ['sass']);
-    grunt.registerTask('scripts', ['handlebars', 'browserify', 'uglify']);
+    grunt.registerTask('scripts', ['handlebars', 'browserify']);
     grunt.registerTask('build', ['styles', 'scripts']);
     grunt.registerTask('default', ['build','watch']);
+    grunt.registerTask('deploy', ['build','uglify']);
 };
 

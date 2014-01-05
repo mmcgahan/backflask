@@ -47,7 +47,7 @@
             <p>This is the footer</p>
         </footer>
         {% block scripts %}
-        <script src="{{ url_for('static', filename='js/main.ugly.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
         {% for scriptname in scriptnames %}
             <script type="text/javascript" src="{{ url_for('static', filename=scriptname) }}"></script>
         {% endfor %}
