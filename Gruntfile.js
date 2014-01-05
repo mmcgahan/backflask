@@ -63,7 +63,7 @@ module.exports = function(grunt) {
                     // transform: ['hbsfy'],  // TODO
                     shim: {
                         jquery: {
-                            path: paths.bower + 'jquery/jquery.js',
+                            path: paths.bower + 'zepto/zepto.js',
                             exports: '$'
                         },
                         underscore: {
