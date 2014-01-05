@@ -13,9 +13,6 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         sass: {
-            options: {
-                loadPath: paths.bower + 'foundation/scss'
-            },
             dist: {
                 style: 'compressed',
                 files: {
@@ -62,8 +59,12 @@ module.exports = function(grunt) {
                     debug: true,
                     // transform: ['hbsfy'],  // TODO
                     shim: {
+                        // jquery: {  // no can do for foundation 5 sadface
+                        //     path: paths.bower + 'jquery/src/jquery.js',
+                        //     exports: '$'
+                        // },
                         jquery: {
-                            path: paths.bower + 'zepto/zepto.js',
+                            path: paths.bower + 'jquery/jquery.js',
                             exports: '$'
                         },
                         underscore: {
@@ -77,16 +78,14 @@ module.exports = function(grunt) {
                         backbone: {
                             path: paths.bower + 'backbone/backbone.js',
                             depends: {
-                                underscore: 'underscore',
-                                jquery: 'jquery'
+                                underscore: '_',
+                                jquery: '$'
                             },
                             exports: 'Backbone'
                         },
                         foundation: {
-                            path: paths.bower + 'foundation/js/foundation.js',
-                            depends: {
-                                jquery: 'jquery'
-                            },
+                            path: paths.bower + 'foundation/js/foundation.min.js',
+                            depends: { jquery: 'jQuery' },
                             exports: '$.fn.foundation'
                         }
                     }
