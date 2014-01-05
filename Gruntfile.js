@@ -13,9 +13,6 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         sass: {
-            options: {
-                loadPath: paths.bower + 'foundation/scss'
-            },
             dist: {
                 style: 'compressed',
                 files: {
@@ -62,14 +59,13 @@ module.exports = function(grunt) {
                     debug: true,
                     // transform: ['hbsfy'],  // TODO
                     shim: {
-                        zepto: {
-                            path: paths.bower + 'zepto/src/zepto.js',
+                        // jquery: {  // no can do for foundation 5 sadface
+                        //     path: paths.bower + 'jquery/src/jquery.js',
+                        //     exports: '$'
+                        // },
+                        jquery: {
+                            path: paths.bower + 'jquery/jquery.js',
                             exports: '$'
-                        },
-                        zeptofx: {
-                            path: paths.bower + 'zepto/src/fx.js',
-                            depends: { zepto: '$' },
-                            exports: '$.fx'
                         },
                         underscore: {
                             path: paths.bower + 'lodash/dist/lodash.underscore.js',
@@ -83,13 +79,13 @@ module.exports = function(grunt) {
                             path: paths.bower + 'backbone/backbone.js',
                             depends: {
                                 underscore: '_',
-                                zepto: '$'
+                                jquery: '$'
                             },
                             exports: 'Backbone'
                         },
                         foundation: {
-                            path: paths.bower + 'foundation/js/foundation.js',
-                            depends: { zeptofx: '$.fx', zepto: 'jQuery' },
+                            path: paths.bower + 'foundation/js/foundation.min.js',
+                            depends: { jquery: 'jQuery' },
                             exports: '$.fn.foundation'
                         }
                     }
