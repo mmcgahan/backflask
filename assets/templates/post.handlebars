@@ -1,6 +1,8 @@
 {{#model}}
-<div class="post">
+<article class="post">
     <h1>{{title}}</h1>
-    <div>{{{content.html}}}</div>
-</div>
+    {{#if subtitle}}<p class="subtitle"></p>{{/if}}
+    <div class="meta">{{create_date}}</div>
+    <section>{{{content.html}}}</section>
+</article>
 {{/model}}

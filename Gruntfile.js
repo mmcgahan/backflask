@@ -51,7 +51,7 @@ module.exports = function(grunt) {
         browserify: {
             app: {
                 src: [
-                    // paths.templates + '*.handlebars',  // TODO hbsfy
+                    // paths.templates + '*.handlebars',  // TODO hbsfy - remove handlebars task
                     paths.jsapp + '*.js'
                 ],
                 dest: paths.js + 'main.js',
@@ -59,8 +59,8 @@ module.exports = function(grunt) {
                     debug: true,
                     // transform: ['hbsfy'],  // TODO
                     shim: {
-                        // jquery: {  // no can do for foundation 5 sadface
-                        //     path: paths.bower + 'jquery/src/jquery.js',
+                        // zepto: {  // no can do for foundation 5 sadface - might be able to load for mobile
+                        //     path: paths.bower + 'zepto/src/zepto.js',
                         //     exports: '$'
                         // },
                         jquery: {
@@ -92,7 +92,7 @@ module.exports = function(grunt) {
                 }
             }
         },
-        uglify: {  // TODO sourcemaps
+        uglify: {
             default: {
                 files: {
                     'assets/js/main.ugly.js': paths.js + 'main.js'
