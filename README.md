@@ -16,14 +16,22 @@ Python on the backend, JS+SCSS on the front. Fully responsive, mobile-first blog
 
 # Usage
 
-1. Edit the app config file
+1. Install Python packages with `pip`.
+
+    ```sh
+    $ pip install -r requirements.txt
+    ```
+
+    You might get an error here if you don't have PostgreSQL installed, because the requirements file will try to install a PostgreSQL Python driver. You can use Homebrew on Mac, or install [Postgres.app](http://postgresapp.com/) and make sure `pg_config` is in your `$PATH`.
+
+2. Edit the app config file
 
     In your `instance/` directory, create a `config.py` file that declares the following variables:
 
-    - `SQLALCHEMY_DATABASE_URI`
+    - `SQLALCHEMY_DATABASE_URI` (e.g. postgresql://user@localhost:5432/backflask)
     - `SECRET_KEY` (a random string that is used for connections with the XML-RPC API)
 
-2. Create and initialize the DB
+3. Create and initialize the DB
     
     For local development, just set up a simple SQL database in the flavor of your choice - Backflask uses SQLAlchemy to manage the DB, so as long as your `SQLALCHEMY_DATABASE_URI` config variable is set correctly, it will connect to any existing DB.
 
@@ -32,15 +40,17 @@ Python on the backend, JS+SCSS on the front. Fully responsive, mobile-first blog
     CREATE DATABASE backflask;
     ```
 
+    I recommend using [Postgres.app](http://postgresapp.com/) on Mac to get PostgreSQL up and running. Once installed, run `psql` from the command line to open a SQL prompt.
+
     Then run `pysetup.py` to create an Admin user, an example Category, and an example Post.
 
-3. `npm install` (loades package.json dependencies, including Grunt)
+4. `npm install` (loades package.json dependencies, including Grunt)
 
-4. `grunt` (not ready)
-    - load bower packages
+5. `grunt`
+    - load bower packages (not ready)
     - build scripts + stylesheets (dev, uncompressed)
 
-5. `grunt server` (not ready)
+5. `grunt watch`
     - flask dev server
     - watch for python changes (and script+style+template), livereload
 

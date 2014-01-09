@@ -4,7 +4,7 @@ from pyapp.models import User, Category, Post
 from pyapp import db
 
 def reset_db():
-    if (raw_input('Delete database? (y/n) ') == 'y'):
+    if (raw_input('Initialize database? (y/n) ') == 'y'):
         db.drop_all()
         db.create_all()
     return True
