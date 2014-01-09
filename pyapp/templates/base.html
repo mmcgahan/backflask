@@ -1,56 +1,70 @@
 <!DOCTYPE html>
 <html class="no-js">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>{% block title %}{{g.title}}{% endblock %}</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width">
-        {% block styles -%}
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
-        {%- endblock styles %}
-        {% block headscripts %}{{headscripts}}
-        {% endblock headscripts %}
-    </head>
-    <body class="{{body_class}}">
-        <nav id='nav'>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/posts">Posts</a></li>
-            </ul>
-        </nav>
-        <header>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>{% block title %}{{g.title}}{% endblock %}</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width">
+		{% block styles -%}
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
+		{%- endblock styles %}
+		{% block headscripts %}{{headscripts}}
+		{% endblock headscripts %}
+	</head>
+	<body class="{{body_class}}">
+		<div class="off-canvas-wrap">
+			<div class="inner-wrap">
+				<nav id='nav' class="tab-bar">
+					<section class="left-small">
+						<a class="left-off-canvas-toggle menu-icon" ><span></span></a>
+					</section>
 
-        </header>
-        <div id="body">
-        {% block body %}
-            <h1>Foo: {{foo}}</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, mollitia, sunt quibusdam iusto iste animi quidem maiores fugiat atque unde veniam libero repudiandae odit possimus est ab voluptates hic porro?</p>
-            <h2>Heading 2</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maiores, modi fugit doloremque odio perferendis quas eligendi saepe obcaecati nulla est dolores iste in reiciendis voluptates magni vel quam inventore nisi!</p>
-            <ul>
-                <li>Item 1</li>
-                <li>Item 2</li>
-                <li>Item 3</li>
-                <li>Item 4</li>
-            </ul>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odio, corporis, nulla doloremque vero distinctio velit non in ducimus consequatur fugit delectus neque molestiae atque a excepturi maiores architecto est sequi.</p>
-            <h3>Heading 3</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis, voluptatem, magnam maiores aperiam perferendis esse iste deserunt dolore inventore blanditiis laudantium officia suscipit soluta distinctio unde cupiditate earum veritatis eum.</p>
-            <blockquote>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, nostrum dolores assumenda tempore atque totam placeat autem blanditiis nemo debitis ab sunt neque quae odit natus eaque explicabo. Quod, illo.</blockquote>
-            <cite>Citation</cite>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius, ad, et, omnis quasi sunt ab dignissimos pariatur perferendis ipsum voluptate ipsa ex accusamus culpa maiores ratione veritatis blanditiis minus reprehenderit?</p>
-        {% endblock %}
-        </div>
+					<section class="middle tab-bar-section">
+						<h1 class="title">Foundation</h1>  {# should hook this into posts being rendered #}
+					</section>
+				</nav>
+				<aside class="left-off-canvas-menu">
+					<ul class="off-canvas-list">
+						<li><a href="/">Home</a></li>
+						<li><a href="/posts">Posts</a></li>
+					</ul>
+				</aside>
 
-        <footer>
-            <p>This is the footer</p>
-        </footer>
-        {% block scripts %}
-        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-        {% for scriptname in scriptnames %}
-            <script type="text/javascript" src="{{ url_for('static', filename=scriptname) }}"></script>
-        {% endfor %}
-        {% endblock scripts %}
-    </body>
+				<section id="body" class="main-section">
+				{% block body %}
+					<h1>Foo: {{foo}}</h1>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, mollitia, sunt quibusdam iusto iste animi quidem maiores fugiat atque unde veniam libero repudiandae odit possimus est ab voluptates hic porro?</p>
+					<h2>Heading 2</h2>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maiores, modi fugit doloremque odio perferendis quas eligendi saepe obcaecati nulla est dolores iste in reiciendis voluptates magni vel quam inventore nisi!</p>
+					<ul>
+						<li>Item 1</li>
+						<li>Item 2</li>
+						<li>Item 3</li>
+						<li>Item 4</li>
+					</ul>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odio, corporis, nulla doloremque vero distinctio velit non in ducimus consequatur fugit delectus neque molestiae atque a excepturi maiores architecto est sequi.</p>
+					<h3>Heading 3</h3>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis, voluptatem, magnam maiores aperiam perferendis esse iste deserunt dolore inventore blanditiis laudantium officia suscipit soluta distinctio unde cupiditate earum veritatis eum.</p>
+					<blockquote>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, nostrum dolores assumenda tempore atque totam placeat autem blanditiis nemo debitis ab sunt neque quae odit natus eaque explicabo. Quod, illo.</blockquote>
+					<cite>Citation</cite>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius, ad, et, omnis quasi sunt ab dignissimos pariatur perferendis ipsum voluptate ipsa ex accusamus culpa maiores ratione veritatis blanditiis minus reprehenderit?</p>
+				{% endblock %}
+				</section>
+
+				<a class="exit-off-canvas"></a>
+
+			</div>
+		</div>
+
+		<footer>
+			<p>This is the footer</p>
+		</footer>
+		{% block scripts %}
+		<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+		{% for scriptname in scriptnames %}
+			<script type="text/javascript" src="{{ url_for('static', filename=scriptname) }}"></script>
+		{% endfor %}
+		{% endblock scripts %}
+	</body>
 </html>
