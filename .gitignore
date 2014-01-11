@@ -5,6 +5,7 @@
 /assets/vendor/*
 /assets/jsapp/templates.js
 /assets/js/*
+/assets/images/*
 /node_modules/
 /instance/*
 !/instance/README*
