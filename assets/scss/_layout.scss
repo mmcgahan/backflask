@@ -1,6 +1,18 @@
+#logo {
+	$img-width: 40px;
+	border-radius: $img-width / 2;
+	margin: 5px 1em 0 0;
+}
+
 #body {
-	margin: 0 1em;
+	margin: 1em;
+	min-height: 480px;
 }
 .posts {
-	@extend .off-canvas-list;
+}
+.post {
+	img {
+		display: block;
+		margin: 1em auto;
+	}
 }

@@ -39,6 +39,7 @@ $off-canvas-link-border-bottom: 1px solid darken($off-canvas-bg, 5%) !default;
 
 // Off Canvas Menu Icon Variables
 $tabbar-menu-icon-color: #FFF !default;
+$tabbar-menu-icon-bg: #333 !default;  // custom
 $tabbar-menu-icon-hover: darken($tabbar-menu-icon-color, 30%) !default;
 
 $tabbar-menu-icon-text-indent: rem-calc(35) !default;
@@ -86,6 +87,7 @@ $menu-slide: "transform 500ms ease" !default;
   background: $off-canvas-bg;
   z-index: 1001;
   box-sizing: content-box;
+  font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
 }
 
 // TRANSLATE 3D
@@ -157,14 +159,12 @@ $menu-slide: "transform 500ms ease" !default;
 @mixin left-small-section {
   @extend %tabbar-small-section;
   border-right: $tabbar-left-section-border;
-  box-shadow: 1px 0 0 lighten($tabbar-bg, 10%);
   left:0;
 }
 
 @mixin right-small-section {
   @extend %tabbar-small-section;
   border-left: $tabbar-right-section-border;
-  box-shadow: -1px 0 0 darken($tabbar-bg, 10%);
   right:0;
 }
 
@@ -216,7 +216,6 @@ $menu-slide: "transform 500ms ease" !default;
       display: block;
       padding: $off-canvas-link-padding;
       color: $off-canvas-link-color;
-      background-color: $tabbar-bg;  // this should be a named color
       border-bottom: $off-canvas-link-border-bottom;
     }
   }
@@ -281,13 +280,14 @@ section.tab-bar-section { @include tab-bar-section; }
 
 // MENU BUTTON
 // This is a little bonus. You don't need it for off canvas to work. Mixins to be written in the future.
-a.menu-icon {
+.menu-icon {
   text-indent: $tabbar-menu-icon-text-indent;
   width: $tabbar-height;
   height: $tabbar-height;
   display: block;
   line-height: $tabbar-menu-icon-line-height;
   padding: $tabbar-menu-icon-padding;
+  background: $tabbar-menu-icon-bg;
   color: $topbar-menu-link-color;
   position: relative;
 

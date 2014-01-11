@@ -15,21 +15,18 @@
 	<body class="{{body_class}}">
 		<div class="off-canvas-wrap">
 			<div class="inner-wrap">
-				<nav id='nav' class="tab-bar">
-					<section class="left-small">
-						<a class="left-off-canvas-toggle menu-icon" ><span></span></a>
-					</section>
-
-					<section class="middle tab-bar-section">
-						<h1 class="title">Foundation</h1>  {# should hook this into posts being rendered #}
+				<nav id='nav' class="tab-bar right">
+					<section class="right-small">
+						<a class="right-off-canvas-toggle menu-icon" ><span></span></a>
 					</section>
 				</nav>
-				<aside class="left-off-canvas-menu">
+				<aside class="right-off-canvas-menu">
 					<ul class="off-canvas-list">
 						<li><a href="/">Home</a></li>
 						<li><a href="/posts">Posts</a></li>
 					</ul>
 				</aside>
+				<img id="logo" src="http://s.gravatar.com/avatar/8ccce579a02550e72bdde76a0fe8ae1d?s=80" width="40" alt="Mike">
 
 				<section id="body" class="main-section">
 				{% block body %}{% endblock %}

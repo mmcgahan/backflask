@@ -38,8 +38,9 @@ $include-open-sans: false;
 
 // We use these to control various global styles
 // $body-bg: #fff;
-// $body-font-color: #222;
+$body-font-color: $text-color;
 // $body-font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+$body-font-family: "Palatino", Times, serif;
 // $body-font-weight: normal;
 // $body-font-style: normal;
 
@@ -483,25 +484,25 @@ $include-open-sans: false;
 
 // Off-canvas
 
-// $tabbar-bg: #333;
+$tabbar-bg: white;
 // $tabbar-height: rem-calc(45);
 // $tabbar-line-height: $tabbar-height;
-// $tabbar-color: #FFF;
+$tabbar-color: $text-color;
 // $tabbar-middle-padding: 0 rem-calc(10);
 
 // Off Canvas Divider Styles
-// $tabbar-right-section-border: solid 1px lighten($tabbar-bg, 10%);
+$tabbar-right-section-border: none;
 // $tabbar-left-section-border: solid 1px darken($tabbar-bg, 10%);
 
 // Off Canvas Tab Bar Headers
-// $tabbar-header-color: #FFF;
+$tabbar-header-color: $text-color;
 // $tabbar-header-weight: bold;
 // $tabbar-header-line-height: $tabbar-height;
 // $tabbar-header-margin: 0;
 
 // Off Canvas Menu Variables
 // $off-canvas-width: 250px;
-// $off-canvas-bg: #333;
+$off-canvas-bg: $gray-dark;
 
 // Off Canvas Menu List Variables
 // $off-canvas-label-padding: 0.3rem rem-calc(15);
@@ -518,6 +519,7 @@ $include-open-sans: false;
 
 // Off Canvas Menu Icon Variables
 // $tabbar-menu-icon-color: #FFF;
+$tabbar-menu-icon-bg: $gray-light;  // custom
 // $tabbar-menu-icon-hover: darken($tabbar-menu-icon-color, 30%);
 
 // $tabbar-menu-icon-text-indent: rem-calc(35);
@@ -538,7 +540,7 @@ $include-open-sans: false;
 // $off-canvas-overlay-background-hover: rgba(#FFF, 0.05);
 
 // Transition Variabls
-// $menu-slide: "transform 500ms ease";
+$menu-slide: "transform 300ms ease-out";
 
 // Orbit
 
