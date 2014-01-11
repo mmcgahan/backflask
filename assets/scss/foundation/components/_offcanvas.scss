@@ -122,7 +122,7 @@ $menu-slide: "transform 500ms ease" !default;
 
 // TAB BAR
 // This is the tab bar base
-@mixin tab-bar-base { 
+@mixin tab-bar-base {
   @extend %kill-flicker;
 
   // base styles
@@ -179,7 +179,7 @@ $menu-slide: "transform 500ms ease" !default;
   }
 
   // still need to make these non-presntational
-  &.left {     
+  &.left {
     left: 0;
     right: $tabbar-height;
   }
@@ -212,9 +212,11 @@ $menu-slide: "transform 500ms ease" !default;
       margin: $off-canvas-label-margin;
     }
     a {
+      font-weight: 300;  // TODO: use a variable
       display: block;
       padding: $off-canvas-link-padding;
       color: $off-canvas-link-color;
+      background-color: $tabbar-bg;  // this should be a named color
       border-bottom: $off-canvas-link-border-bottom;
     }
   }
@@ -253,7 +255,7 @@ $menu-slide: "transform 500ms ease" !default;
   @extend %kill-flicker;
   @extend %off-canvas-menu;
   @include translate3d(-100%,0,0);
-  * { @extend %kill-flicker; } 
+  * { @extend %kill-flicker; }
 }
 @mixin right-off-canvas-menu {
   @extend %kill-flicker;
@@ -309,7 +311,7 @@ a.menu-icon {
                           0 16px 0 1px $tabbar-menu-icon-color,
                           0 22px 0 1px $tabbar-menu-icon-color;
   }
-  
+
   &:hover span {
     @if $experimental {
       -webkit-box-shadow: 0 10px 0 1px $tabbar-menu-icon-hover,
@@ -325,11 +327,11 @@ a.menu-icon {
 .left-off-canvas-menu { @include left-off-canvas-menu; }
 .right-off-canvas-menu { @include right-off-canvas-menu; }
 
-ul.off-canvas-list { @include off-canvas-list; }
+.off-canvas-list { @include off-canvas-list; }
 
 
 // ANIMATION CLASSES
-// These classes are added with JS and trigger the actual animation. 
+// These classes are added with JS and trigger the actual animation.
 .move-right {
   > .inner-wrap {
     @include translate3d($off-canvas-width,0,0);
@@ -348,9 +350,9 @@ ul.off-canvas-list { @include off-canvas-list; }
 // IE9 HAX
 // Womp womp! IE9 doesn't do CSS transforms. Let's fix this.
 .lt-ie10 {
-  
+
   // move off canvas menus off the viewport
-  .left-off-canvas-menu { left: -($off-canvas-width); } 
+  .left-off-canvas-menu { left: -($off-canvas-width); }
   .right-off-canvas-menu { right: -($off-canvas-width); }
 
   // Snap them in place
